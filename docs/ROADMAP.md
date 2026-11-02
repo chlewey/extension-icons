@@ -21,6 +21,7 @@ plus snapshot/restore ("fix mode") and shareable icon themes.
 | UI pattern | MVVM (CommunityToolkit.Mvvm) | Keeps registry/shell logic out of XAML code-behind and testable |
 | Elevation | Per-user only for MVP (`HKCU\Software\Classes` + per-user `UserChoice` where writable) | Simpler, safer, no UAC friction; see open risk below for machine-wide (`HKLM`/`HKCR`) support in v1.0 |
 | Packaging | Plain `.exe` via `dotnet publish` (self-contained) for MVP; installer (Inno Setup or MSI) by v1.0 | Fast iteration now, polish later |
+| Localization | `.resx` resource files per culture (`en`, `es`), `CultureInfo`-driven at startup (OS language by default, overridable in-app) | Standard .NET/WPF localization path, no extra framework needed for two languages |
 
 ### Solution layout (already scaffolded)
 
@@ -92,6 +93,9 @@ icon per extension without touching default-app behavior, with a reliable undo.
 - No changes to default *open* app yet — out of scope until the spike in §3
   resolves how to do that safely.
 - Core logic covered by unit tests against fake registry/shell providers.
+- UI strings live in `.resx` resources from day one (English only for the
+  MVP) so adding the Spanish translation in v1.0 is a translation task, not
+  a refactor.
 
 ## 5. v1.0 — full association control, themes, installer
 
@@ -113,6 +117,9 @@ icon per extension without touching default-app behavior, with a reliable undo.
   sizes (16/32/48/256), basic light/dark theme support in the app itself.
 - Diagnostics/log view for support requests (what changed, when, from what to
   what) — no telemetry sent anywhere, purely local.
+- **Localization: English and Spanish supported in the UI**, selectable
+  in-app and defaulting to the OS language; all v1.0 strings ship in both
+  `.resx` sets, with Spanish reviewed by a native speaker before release.
 
 ## 6. Wishlist — beyond v1.0
 
@@ -155,5 +162,7 @@ icon per extension without touching default-app behavior, with a reliable undo.
 7. Core + App: default-app-per-action via OS-sanctioned flow.
 8. Elevated helper for machine-wide changes.
 9. Theme import/export.
-10. Installer + polish.
-11. Ship v1.0.
+10. Spanish translation (`.resx`) + in-app language switcher, reviewed by a
+    native speaker.
+11. Installer + polish.
+12. Ship v1.0.
