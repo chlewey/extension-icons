@@ -140,6 +140,36 @@ icon per extension without touching default-app behavior, with a reliable undo.
 - Explorer context-menu quick actions ("Reset icon for this file type").
 - WinUI 3 / Fluent UI rewrite if native Win11 look becomes a priority once
   the feature set has stabilized.
+- **Content-based format recognition, beyond the extension** *(exploratory —
+  not committed)*. Everything above identifies a file's type by its
+  extension, which is really just a convention. A `.txt` can contain JSON, a
+  `.dat` can be anything, and a renamed or extension-less file defeats the
+  whole model. This would mean sniffing actual file content — magic-byte/
+  signature detection (the same idea as the Unix `file` command / libmagic),
+  plus structural checks for container formats where the signature alone
+  isn't enough (e.g. `.docx`/`.xlsx`/`.jar`/`.apk` are all ZIP containers
+  distinguished by what's inside them, not by their outer bytes) — to assign
+  an icon/type based on what the file actually is, independent of its name.
+  Needs its own research spike: where this plugs into Explorer (a Shell Icon
+  Overlay/`IconHandler` COM object is the realistic hook, see below), and how
+  to keep it fast enough not to make Explorer feel sluggish when listing a
+  folder with thousands of files.
+- **Per-file icons, including disambiguating one shared extension that
+  several distinct formats claim** *(exploratory — not committed, depends on
+  the item above)*. Today every override in this app is per-*extension*, not
+  per-*file* — fine as long as one extension means one format. It breaks down
+  for extensions reused across genuinely different formats (ambiguous `.dat`/
+  `.bin` payloads, or schema-less `.xml`/`.json` where the "real" format is
+  only knowable by sniffing content, e.g. an RSS feed vs. a config file vs. an
+  SVG-as-XML). Solving this for real means moving from a static per-extension
+  `DefaultIcon` registry entry to a live per-file decision, which is a much
+  bigger architectural step: Explorer would need to call into this app (or a
+  registered icon handler) *per file* rather than resolve a static registry
+  value once per extension. That's the `IExtractIcon`/icon-handler COM
+  contract, running inside `explorer.exe`'s process — real complexity and
+  real performance risk (it would run once per visible icon, per folder
+  view), so this is explicitly a "see how far content sniffing gets us
+  first" item, not a planned feature.
 
 ## 7. Testing & quality approach
 
