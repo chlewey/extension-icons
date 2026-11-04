@@ -1,0 +1,13 @@
+{
+  // Static landing page for extension-icons.ilecto.app, served by Cloudflare Workers static assets.
+  // Deploy from this folder with: npx wrangler deploy
+  "name": "extension-icons-site",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "404-page"
+  },
+  "routes": [
+    { "pattern": "extension-icons.ilecto.app", "custom_domain": true }
+  ]
+}

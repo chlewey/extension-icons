@@ -488,3 +488,6 @@ $RECYCLE.BIN/
 !src/ExtensionIcons.App/**
 src/ExtensionIcons.App/bin/
 src/ExtensionIcons.App/obj/
+
+# Cloudflare Workers local cache (site/)
+.wrangler/

@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Extension Icons</title>
+<meta name="description" content="Extension Icons is a Windows 11 app that gives every file extension a consistent, correct icon, independent of whichever app currently claims it.">
+<link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+<style>
+  :root {
+    --bg: #faf9f7;
+    --surface: #ffffff;
+    --border: #e6e2db;
+    --text: #1d1b16;
+    --text-muted: #6b6456;
+    --accent: #0f6f84;
+    --accent-ink: #ffffff;
+    --accent-warm: #a66d00;
+    --chip-bg: #f1ece2;
+    --code-bg: #f1ece2;
+    --shadow: 0 1px 2px rgba(29,27,22,0.04), 0 8px 24px rgba(29,27,22,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17140f;
+      --surface: #201c16;
+      --border: #332c22;
+      --text: #f1ece2;
+      --text-muted: #a89d89;
+      --accent: #5fd0e8;
+      --accent-ink: #052830;
+      --accent-warm: #ffeb3b;
+      --chip-bg: #2a241b;
+      --code-bg: #2a241b;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17140f;
+    --surface: #201c16;
+    --border: #332c22;
+    --text: #f1ece2;
+    --text-muted: #a89d89;
+    --accent: #5fd0e8;
+    --accent-ink: #052830;
+    --accent-warm: #ffeb3b;
+    --chip-bg: #2a241b;
+    --code-bg: #2a241b;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.4);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  header.hero {
+    padding: 64px 0 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .mark {
+    display: block;
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+  }
+  h1 {
+    font-size: clamp(32px, 6vw, 44px);
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+  }
+  .tagline {
+    font-size: 19px;
+    color: var(--text-muted);
+    margin: 0 0 20px;
+    max-width: 46ch;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--chip-bg);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+  .badge::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent-warm);
+  }
+
+  section { padding: 40px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+  h2 {
+    font-size: 22px;
+    margin: 0 0 18px;
+    letter-spacing: -0.01em;
+  }
+  p { color: var(--text); }
+  .lede { color: var(--text-muted); font-size: 16px; margin-top: -6px; margin-bottom: 20px; }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 520px) {
+    .feature-grid { grid-template-columns: 1fr; }
+  }
+  .feature {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+  }
+  .feature h3 {
+    margin: 0 0 6px;
+    font-size: 15px;
+  }
+  .feature p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .feature code {
+    background: var(--code-bg);
+    border-radius: 6px;
+    padding: 1px 6px;
+    font-size: 12.5px;
+  }
+
+  table.stack {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14.5px;
+  }
+  table.stack td {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  table.stack td:first-child {
+    width: 150px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  table.stack tr:last-child td { border-bottom: none; }
+
+  .roadmap { list-style: none; margin: 0; padding: 0; }
+  .roadmap li {
+    display: flex;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .roadmap li:last-child { border-bottom: none; }
+  .phase-status {
+    flex: 0 0 auto;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 3px 9px;
+    border-radius: 999px;
+    height: fit-content;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+  .phase-status.done { background: #d9ecd6; color: #2c5c28; }
+  .phase-status.next { background: var(--accent); color: var(--accent-ink); }
+  .phase-status.later { background: var(--chip-bg); color: var(--text-muted); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .phase-status.done { background: #244022; color: #a9d6a3; }
+  }
+  :root[data-theme="dark"] .phase-status.done { background: #244022; color: #a9d6a3; }
+  .roadmap-body h3 { margin: 0 0 4px; font-size: 15px; }
+  .roadmap-body p { margin: 0; font-size: 14px; color: var(--text-muted); }
+
+  footer {
+    padding: 40px 0 64px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .ilecto-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .ilecto-link:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <img class="mark" src="assets/icon.svg" alt="Extension Icons app icon" width="64" height="64">
+      <h1>Extension Icons</h1>
+      <p class="tagline">A Windows 11 app that gives every file extension a consistent, correct icon &mdash; independent of whichever app currently claims it.</p>
+      <span class="badge">Early development</span>
+    </header>
+
+    <section>
+      <h2>The problem</h2>
+      <p class="lede">Windows ties an extension's icon to whoever last claimed it.</p>
+      <p>Windows resolves a file extension's icon through whichever app last registered itself as that
+      format's handler. In practice, <code>.htm</code> and <code>.html</code> show up as &ldquo;Edge
+      documents,&rdquo; and general-purpose formats like <code>.xml</code>, <code>.csv</code> and
+      <code>.json</code> are routinely rebranded with the icon of whatever app last installed itself as
+      their handler &mdash; even when several unrelated apps can open the same format. Installing a new,
+      &ldquo;aggressive&rdquo; application can silently take over icons and associations for extensions it
+      has no special claim to.</p>
+    </section>
+
+    <section>
+      <h2>What it does</h2>
+      <p class="lede">The icon is a property of the file type, not of whoever owns it today.</p>
+      <div class="feature-grid">
+        <div class="feature">
+          <h3>Distinct icons per type</h3>
+          <p>Keeps a consistent icon for common extensions regardless of which application currently owns the association.</p>
+        </div>
+        <div class="feature">
+          <h3>Capability-aware</h3>
+          <p>Recognizes which installed applications can handle a given extension, not just which one is currently the default.</p>
+        </div>
+        <div class="feature">
+          <h3>Per-action defaults</h3>
+          <p>Choose, per file type, which application should open, edit, text-edit, or browse a file.</p>
+        </div>
+        <div class="feature">
+          <h3>Fix mode</h3>
+          <p>Reverts icons and associations to a previously saved state &mdash; useful right after an aggressive install.</p>
+        </div>
+        <div class="feature">
+          <h3>Themes</h3>
+          <p>Supports sets of file-type icons, including themes downloaded from community repositories.</p>
+        </div>
+        <div class="feature">
+          <h3>User scope first</h3>
+          <p>The MVP writes only to your own <code>HKCU</code> associations &mdash; no admin prompt required.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Tech stack</h2>
+      <table class="stack">
+        <tr><td>Language</td><td>C#</td></tr>
+        <tr><td>Runtime</td><td>.NET 8</td></tr>
+        <tr><td>UI</td><td>WPF, MVVM</td></tr>
+        <tr><td>Platform</td><td>Windows 11</td></tr>
+        <tr><td>Integration</td><td>Windows Registry &amp; Shell APIs (<code>HKEY_CLASSES_ROOT</code>, per-user <code>UserChoice</code>)</td></tr>
+        <tr><td>Localization</td><td>English and Spanish, planned for v1.0</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>Roadmap</h2>
+      <ul class="roadmap">
+        <li>
+          <span class="phase-status done">Done</span>
+          <div class="roadmap-body">
+            <h3>Phase 0 &middot; Foundation</h3>
+            <p>Validated the icon-override mechanism live on Windows 11, then built the Core registry/shell abstraction layer with fake providers and unit tests.</p>
+          </div>
+        </li>
+        <li>
+          <span class="phase-status next">Next</span>
+          <div class="roadmap-body">
+            <h3>Phase 1 &middot; MVP (v0.1)</h3>
+            <p>Extension inventory with a built-in catalog, a read-only inventory UI, per-user icon overrides, and one-click &ldquo;fix mode&rdquo; revert.</p>
+          </div>
+        </li>
+        <li>
+          <span class="phase-status later">Later</span>
+          <div class="roadmap-body">
+            <h3>Phase 2 &middot; v1.0</h3>
+            <p>Per-action default-app assignment, an elevated helper for machine-wide changes, icon theme import/export, an installer, and the English/Spanish UI.</p>
+          </div>
+        </li>
+        <li>
+          <span class="phase-status later">Later</span>
+          <div class="roadmap-body">
+            <h3>Phase 3 &middot; Wishlist</h3>
+            <p>Content-based format recognition beyond the extension, per-file icons, a community theme repository, and a background watcher for icon hijacks.</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <footer>
+      <span>Extension Icons &middot; MIT License</span>
+      <a class="ilecto-link" href="https://ilecto.app">ilecto.app &rarr;</a>
+    </footer>
+  </div>
+</body>
+</html>
