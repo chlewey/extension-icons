@@ -6,11 +6,15 @@ completed — don't let it drift from reality.
 
 ## MVP (v0.1)
 
-`[█░░░░░]` 1/6 — 17%
+`[██░░░░]` 2/6 — 33%
 
 - [x] 1. Spike: validate icon-only override mechanism (§3). — see
       [`spikes/001-icon-override-mechanism.md`](spikes/001-icon-override-mechanism.md)
-- [ ] 2. Core: registry/shell abstraction layer + fake providers + tests.
+- [x] 2. Core: registry/shell abstraction layer + fake providers + tests. —
+      `IRegistryProvider`/`IShellNotifier` with `Win32*` and `Fake*`
+      implementations, 12 unit tests against the fakes; `Win32*` verified
+      live against the real registry (not in the automated suite, per
+      ROADMAP.md §7).
 - [ ] 3. Core: extension inventory + built-in catalog.
 - [ ] 4. App: read-only inventory UI.
 - [ ] 5. Core + App: icon override (user scope) + snapshot/restore
