@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108" width="108" height="108">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2E8B9E"/>
+      <stop offset="1" stop-color="#0D3B4E"/>
+    </linearGradient>
+  </defs>
+  <rect width="108" height="108" rx="24" fill="url(#bg)"/>
+
+  <!-- generic file, folded corner -->
+  <path fill="#FFFFFF" fill-opacity="0.95"
+      d="M 30,18 H 62 L 80,36 V 90 A 3,3 0 0 1 77,93 H 30 A 3,3 0 0 1 27,90 V 21 A 3,3 0 0 1 30,18 Z"/>
+  <path fill="#BFE3EC" d="M 62,18 L 80,36 H 65 A 3,3 0 0 1 62,33 Z"/>
+  <rect x="35" y="48" width="30" height="5" rx="2.5" fill="#CFE9EF"/>
+  <rect x="35" y="59" width="22" height="5" rx="2.5" fill="#CFE9EF"/>
+
+  <!-- distinct icons claiming the same file type -->
+  <rect x="58" y="70" width="18" height="18" rx="5" fill="#E8742C" transform="rotate(-10 67 79)"/>
+  <rect x="70" y="66" width="18" height="18" rx="5" fill="#4CAF7D" transform="rotate(6 79 75)"/>
+  <rect x="82" y="72" width="18" height="18" rx="5" fill="#9C5FC9" transform="rotate(16 91 81)"/>
+</svg>
