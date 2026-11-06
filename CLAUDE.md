@@ -12,6 +12,7 @@ Windows 11 app that decouples a file extension's icon from whichever app current
 - `src/ExtensionIcons.Core/` — domain logic: catalog, registry access, icon handling, snapshot/restore, themes
 - `tests/ExtensionIcons.Core.Tests/` — xUnit tests against Core using in-memory fakes
 - `docs/ROADMAP.md` — architecture decisions, MVP / v1.0 / wishlist
+- `site/` — static landing page for extension-icons.ilecto.app (Cloudflare Workers static assets; deploy from `site/` with `npx wrangler deploy`). Not part of the .NET solution.
 
 ## Commands
 ```powershell
@@ -37,10 +38,19 @@ Open `ExtensionIcons.sln` in Visual Studio 2022 to run/debug the app.
 - Themes are zip packs of `.ico` files plus a `theme.json`; validate on import (image assets only, no code execution).
 - No telemetry. Diagnostics/logs stay local.
 
+## Branching (defined in CONTRIBUTING.md on `develop/mvp`)
+- `master` — always releasable; narrow hotfixes only.
+- `develop/xxxx` — roadmap work toward a milestone (e.g. `develop/mvp`, `develop/v1.0`).
+- `feature/xxxx` — features outside the core roadmap (wishlist items, the landing page).
+- `patch/xxxx` — non-urgent fixes.
+- `develop/*` and `feature/*` merge to `master` by pull request when shippable.
+
 ## Current status
-Early scaffolding: solution, projects and one placeholder test exist; builds clean. Next milestone step: time-boxed spike to validate icon-only override (ROADMAP §3), then the registry/shell abstraction layer with fakes.
+Roadmap work happens on `develop/mvp`; `master` lags it until the MVP is shippable. As of 2026-11-05, MVP steps 1-2 of 6 are done there: the icon-override spike (`docs/spikes/`) and the Core registry/shell abstraction layer (`IRegistryProvider`, `IShellNotifier`, Win32 and Fake implementations, 12 tests). Next: extension inventory + built-in catalog, then the read-only inventory UI.
+Live progress is tracked in `docs/PROGRESS.md` (on `develop/mvp`); check it rather than trusting this snapshot.
 
 ## Conventions
 - Match surrounding code style; `Nullable` and `ImplicitUsings` are enabled in all projects.
 - Keep README.md and LEEME.md in sync when either changes.
-- Git: default branch is `master`. Commit/push only when asked.
+- Git: default branch is `master` (there is no `main`). Commit/push only when asked.
+- Roadmap work goes on a `develop/*` branch, not directly on `master`.
