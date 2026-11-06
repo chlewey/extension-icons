@@ -123,21 +123,30 @@ icon per extension without touching default-app behavior, with a reliable undo.
 
 ## 6. Wishlist — beyond v1.0
 
-- In-app browsing of a community icon-theme repository (GitHub-hosted),
-  with ratings/previews before import.
-- Background watcher (system tray) that detects when a newly installed app
-  has silently re-claimed an extension's icon/association and offers a
-  one-click revert using the existing snapshot mechanism.
+Items are ordered from least to most complex. This is a complexity ranking, not
+a priority order or a commitment.
+
+- Explorer context-menu "Copy path" entry on any file, offering to copy its
+  absolute path, its file name, or its extension to the clipboard. (A classic
+  registry verb is simple but only shows under "Show more options" on
+  Windows 11; the new top-level menu needs an `IExplorerCommand` handler plus
+  package identity, which is much more work.)
+- Explorer context-menu quick actions ("Reset icon for this file type"). Same
+  mechanism as "Copy path", so build them together.
 - "Extension families" — manage related extensions (e.g. `.htm`/`.html`,
   `.jpg`/`.jpeg`) as one logical group by default, with per-member override
   when needed.
 - PowerShell module / CLI for scripting association and icon changes
   (useful for IT rollouts, dotfiles-style repeatable setup).
+- Background watcher (system tray) that detects when a newly installed app
+  has silently re-claimed an extension's icon/association and offers a
+  one-click revert using the existing snapshot mechanism.
+- In-app browsing of a community icon-theme repository (GitHub-hosted),
+  with ratings/previews before import.
 - Enterprise story: GPO-deployable configuration profile for machine-wide
   rollout without per-user interaction.
 - Plugin SDK for third parties to ship icon packs or extension-catalog
   extensions.
-- Explorer context-menu quick actions ("Reset icon for this file type").
 - WinUI 3 / Fluent UI rewrite if native Win11 look becomes a priority once
   the feature set has stabilized.
 - **Content-based format recognition, beyond the extension** *(exploratory —
