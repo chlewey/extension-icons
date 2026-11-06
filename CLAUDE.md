@@ -24,7 +24,7 @@ Open `ExtensionIcons.sln` in Visual Studio 2022 to run/debug the app.
 ## Local dev environment (Windows 11)
 - Required: .NET 8 SDK (`winget install Microsoft.DotNet.SDK.8`)
 - Recommended: Visual Studio 2022 with ".NET Desktop Development" workload
-- Needed later (v1.0 installer): Inno Setup (`winget install JRSoftware.InnoSetup`) or WiX
+- v1.0 installer: Inno Setup 6 (`winget install JRSoftware.InnoSetup`), installed per-user. Compiler: `%LOCALAPPDATA%\Programs\Inno Setup 6\ISCC.exe` (not on PATH; call by full path). No `.iss` script exists yet. WiX is the MSI alternative if the roadmap changes.
 - Optional: Windows SDK (`signtool`) for code signing
 - Opening a new terminal after installing the SDK may be needed for `dotnet` to be on PATH.
 
