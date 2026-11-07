@@ -34,6 +34,17 @@ public sealed class FakeRegistryProvider : IRegistryProvider
         _keys[ComboKey(hive, keyPath)][valueName] = value;
     }
 
+    /// <summary>
+    /// Test setup only: populates the read-only <see cref="RegistryHive.ClassesRoot"/>
+    /// view, which <see cref="SetValue"/> deliberately refuses to write. Unlike the
+    /// real merged view, this does not overlay <c>HKCU\Software\Classes</c> on top.
+    /// </summary>
+    public void SeedClassesRoot(string keyPath, string valueName, string value)
+    {
+        EnsureKeyChainExists(RegistryHive.ClassesRoot, keyPath);
+        _keys[ComboKey(RegistryHive.ClassesRoot, keyPath)][valueName] = value;
+    }
+
     public void DeleteKey(RegistryHive hive, string keyPath, bool recursive = true)
     {
         EnsureWritable(hive);
