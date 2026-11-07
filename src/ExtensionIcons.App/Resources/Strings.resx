@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="WindowTitle" xml:space="preserve"><value>Extension Icons</value></data>
+  <data name="SearchLabel" xml:space="preserve"><value>Search</value></data>
+  <data name="SearchHint" xml:space="preserve"><value>Extension, ProgID, description or program</value></data>
+  <data name="FilterCatalogOnly" xml:space="preserve"><value>Catalog formats only</value></data>
+  <data name="FilterUserChoiceOnly" xml:space="preserve"><value>With a default-app override only</value></data>
+  <data name="ColumnIcon" xml:space="preserve"><value>Icon</value></data>
+  <data name="ColumnExtension" xml:space="preserve"><value>Extension</value></data>
+  <data name="ColumnDescription" xml:space="preserve"><value>Type</value></data>
+  <data name="ColumnOwner" xml:space="preserve"><value>Handled by</value></data>
+  <data name="ColumnProgId" xml:space="preserve"><value>ProgID</value></data>
+  <data name="ColumnSource" xml:space="preserve"><value>Resolved from</value></data>
+  <data name="ColumnCatalogIcon" xml:space="preserve"><value>Catalog icon</value></data>
+  <data name="ColumnCatalogFormat" xml:space="preserve"><value>Catalog format</value></data>
+  <data name="SourceUserChoice" xml:space="preserve"><value>User choice</value></data>
+  <data name="SourceClassDefault" xml:space="preserve"><value>Class default</value></data>
+  <data name="SourceNone" xml:space="preserve"><value>Not associated</value></data>
+  <data name="StatusLoading" xml:space="preserve"><value>Reading the registry...</value></data>
+  <data name="StatusShowing" xml:space="preserve"><value>Showing {0} of {1} extensions</value></data>
+  <data name="StatusLoadFailed" xml:space="preserve"><value>Could not read the registry: {0}</value></data>
+</root>

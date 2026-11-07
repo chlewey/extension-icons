@@ -3,10 +3,73 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ExtensionIcons.App"
+        xmlns:res="clr-namespace:ExtensionIcons.App.Resources"
+        xmlns:vm="clr-namespace:ExtensionIcons.App.ViewModels"
         mc:Ignorable="d"
-        Title="Extension Icons" Height="450" Width="800">
-    <Grid>
-        <TextBlock Text="Extension Icons" FontSize="24" Margin="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-    </Grid>
+        d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
+        Title="{x:Static res:Strings.WindowTitle}" Height="640" Width="1100" MinWidth="720" MinHeight="360">
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Text="{Binding StatusText}"/>
+            </StatusBarItem>
+        </StatusBar>
+
+        <Grid DockPanel.Dock="Top" Margin="12,12,12,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" MaxWidth="420"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="{x:Static res:Strings.SearchLabel}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <TextBox Grid.Column="1" x:Name="SearchBox" Padding="4,3"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="{x:Static res:Strings.SearchHint}"
+                     AutomationProperties.Name="{x:Static res:Strings.SearchLabel}"/>
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="20,0,0,0" VerticalAlignment="Center">
+                <CheckBox Content="{x:Static res:Strings.FilterCatalogOnly}" IsChecked="{Binding CatalogOnly}" Margin="0,0,16,0"/>
+                <CheckBox Content="{x:Static res:Strings.FilterUserChoiceOnly}" IsChecked="{Binding UserChoiceOnly}"/>
+            </StackPanel>
+        </Grid>
+
+        <DataGrid ItemsSource="{Binding RowsView}" AutoGenerateColumns="False" IsReadOnly="True"
+                  HeadersVisibility="Column" GridLinesVisibility="Horizontal" SelectionMode="Single"
+                  CanUserAddRows="False" CanUserDeleteRows="False" RowHeight="32"
+                  HorizontalGridLinesBrush="#E6E6E6" BorderBrush="#C8C8C8"
+                  Margin="12,0,12,8" BorderThickness="1">
+            <DataGrid.Resources>
+                <!-- Applies to the text cells: centre them vertically and ellipsize instead of clipping. -->
+                <Style TargetType="TextBlock">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                    <Setter Property="Margin" Value="4,0"/>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="{x:Static res:Strings.ColumnIcon}" Width="56" SortMemberPath="Extension">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding CurrentIcon}" Width="24" Height="24" ToolTip="{Binding IconLocation}"
+                                   RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="{x:Static res:Strings.ColumnExtension}" Binding="{Binding Extension}" Width="90"/>
+                <DataGridTextColumn Header="{x:Static res:Strings.ColumnDescription}" Binding="{Binding Description}" Width="*"/>
+                <DataGridTextColumn Header="{x:Static res:Strings.ColumnOwner}" Binding="{Binding Owner}" Width="170"/>
+                <DataGridTextColumn Header="{x:Static res:Strings.ColumnProgId}" Binding="{Binding ProgId}" Width="190"/>
+                <DataGridTextColumn Header="{x:Static res:Strings.ColumnSource}" Binding="{Binding Source}" Width="110"/>
+                <DataGridTemplateColumn Header="{x:Static res:Strings.ColumnCatalogIcon}" Width="100" SortMemberPath="CatalogFormat">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding CatalogIcon}" Width="24" Height="24"
+                                   RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="{x:Static res:Strings.ColumnCatalogFormat}" Binding="{Binding CatalogFormat}" Width="150"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
 </Window>

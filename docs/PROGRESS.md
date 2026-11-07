@@ -6,7 +6,7 @@ completed — don't let it drift from reality.
 
 ## MVP (v0.1)
 
-`[███░░░]` 3/6 — 50%
+`[████░░]` 4/6 — 67%
 
 - [x] 1. Spike: validate icon-only override mechanism (§3). — see
       [`spikes/001-icon-override-mechanism.md`](spikes/001-icon-override-mechanism.md)
@@ -24,7 +24,19 @@ completed — don't let it drift from reality.
       locations can be packaged-app resource references
       (`@{...ms-resource://...}`, e.g. `.txt` → Notepad) as well as
       `file,index` paths.
-- [ ] 4. App: read-only inventory UI.
+- [x] 4. App: read-only inventory UI. — sortable `DataGrid` over all
+      registered extensions (current icon, type, handling program, ProgID,
+      where it was resolved from, catalog icon/format), with a search box
+      and two filters (catalog formats only, default-app override only).
+      MVVM via CommunityToolkit.Mvvm; strings in `Resources/Strings.resx`;
+      filter/parsing logic lives in Core with 32 new unit tests (56 total).
+      Catalog icons are generated placeholders
+      (`tools/generate-placeholder-icons.ps1`); replace the PNGs in
+      `src/ExtensionIcons.App/Assets/Icons/` with real artwork. Checked by
+      launching the app against the live registry. Known gap: packaged
+      (AppX) ProgIDs, e.g. Notepad's `.txt`, show no icon or friendly type
+      name and the raw ProgID as the program; resolving those needs the
+      package manifest.
 - [ ] 5. Core + App: icon override (user scope) + snapshot/restore
       ("fix mode").
 - [ ] 6. Ship MVP.
