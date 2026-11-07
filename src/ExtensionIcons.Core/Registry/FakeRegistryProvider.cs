@@ -9,22 +9,28 @@ namespace ExtensionIcons.Core.Registry;
 /// delete on a key that still has children throws, same as
 /// RegistryKey.DeleteSubKey.
 /// </summary>
+/// <remarks>
+/// Reads through <see cref="RegistryHive.ClassesRoot"/> merge in
+/// <c>HKCU\Software\Classes</c> the way the real view does: a value set under HKCU
+/// wins over the seeded one, and keys or subkeys from either side are visible.
+/// </remarks>
 public sealed class FakeRegistryProvider : IRegistryProvider
 {
+    private const string UserClassesPath = @"Software\Classes";
+
     private readonly Dictionary<string, Dictionary<string, string>> _keys =
         new(StringComparer.OrdinalIgnoreCase);
 
     public bool KeyExists(RegistryHive hive, string keyPath) =>
-        _keys.ContainsKey(ComboKey(hive, keyPath));
+        RawKeyExists(hive, keyPath) || (IsMerged(hive) && RawKeyExists(RegistryHive.CurrentUser, OverlayPath(keyPath)));
 
     public string? GetValue(RegistryHive hive, string keyPath, string valueName = "")
     {
-        if (_keys.TryGetValue(ComboKey(hive, keyPath), out var values) &&
-            values.TryGetValue(valueName, out var value))
+        if (IsMerged(hive) && RawGetValue(RegistryHive.CurrentUser, OverlayPath(keyPath), valueName) is { } overlaid)
         {
-            return value;
+            return overlaid;
         }
-        return null;
+        return RawGetValue(hive, keyPath, valueName);
     }
 
     public void SetValue(RegistryHive hive, string keyPath, string valueName, string value)
@@ -36,13 +42,36 @@ public sealed class FakeRegistryProvider : IRegistryProvider
 
     /// <summary>
     /// Test setup only: populates the read-only <see cref="RegistryHive.ClassesRoot"/>
-    /// view, which <see cref="SetValue"/> deliberately refuses to write. Unlike the
-    /// real merged view, this does not overlay <c>HKCU\Software\Classes</c> on top.
+    /// view, which <see cref="SetValue"/> deliberately refuses to write. These values stand
+    /// in for the machine-wide (HKLM) side of the real merged view.
     /// </summary>
     public void SeedClassesRoot(string keyPath, string valueName, string value)
     {
         EnsureKeyChainExists(RegistryHive.ClassesRoot, keyPath);
         _keys[ComboKey(RegistryHive.ClassesRoot, keyPath)][valueName] = value;
+    }
+
+    public void DeleteValue(RegistryHive hive, string keyPath, string valueName)
+    {
+        EnsureWritable(hive);
+        if (_keys.TryGetValue(ComboKey(hive, keyPath), out var values))
+        {
+            values.Remove(valueName);
+        }
+    }
+
+    public IReadOnlyList<string> GetValueNames(RegistryHive hive, string keyPath)
+    {
+        var names = new List<string>();
+        if (_keys.TryGetValue(ComboKey(hive, keyPath), out var values))
+        {
+            names.AddRange(values.Keys);
+        }
+        if (IsMerged(hive) && _keys.TryGetValue(ComboKey(RegistryHive.CurrentUser, OverlayPath(keyPath)), out var overlay))
+        {
+            names.AddRange(overlay.Keys.Where(n => !names.Contains(n, StringComparer.OrdinalIgnoreCase)));
+        }
+        return names;
     }
 
     public void DeleteKey(RegistryHive hive, string keyPath, bool recursive = true)
@@ -65,6 +94,25 @@ public sealed class FakeRegistryProvider : IRegistryProvider
     }
 
     public IReadOnlyList<string> GetSubKeyNames(RegistryHive hive, string keyPath)
+    {
+        var names = RawSubKeyNames(hive, keyPath);
+        if (IsMerged(hive))
+        {
+            var seen = new HashSet<string>(names, StringComparer.OrdinalIgnoreCase);
+            names.AddRange(RawSubKeyNames(RegistryHive.CurrentUser, OverlayPath(keyPath)).Where(seen.Add));
+        }
+        return names;
+    }
+
+    private bool RawKeyExists(RegistryHive hive, string keyPath) =>
+        _keys.ContainsKey(ComboKey(hive, keyPath));
+
+    private string? RawGetValue(RegistryHive hive, string keyPath, string valueName) =>
+        _keys.TryGetValue(ComboKey(hive, keyPath), out var values) && values.TryGetValue(valueName, out var value)
+            ? value
+            : null;
+
+    private List<string> RawSubKeyNames(RegistryHive hive, string keyPath)
     {
         var normalized = Normalize(keyPath);
         var childPrefix = normalized.Length == 0 ? $"{hive}:" : $"{hive}:{normalized}\\";
@@ -117,6 +165,14 @@ public sealed class FakeRegistryProvider : IRegistryProvider
                 "RegistryHive.ClassesRoot is a read-only merged view in this app. " +
                 "Write to RegistryHive.CurrentUser instead (see ROADMAP.md, per-user only for MVP).");
         }
+    }
+
+    private static bool IsMerged(RegistryHive hive) => hive == RegistryHive.ClassesRoot;
+
+    private static string OverlayPath(string keyPath)
+    {
+        var normalized = Normalize(keyPath);
+        return normalized.Length == 0 ? UserClassesPath : $@"{UserClassesPath}\{normalized}";
     }
 
     private static string ComboKey(RegistryHive hive, string keyPath) => $"{hive}:{Normalize(keyPath)}";

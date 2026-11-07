@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <Resource Include="Assets\Icons\*.png" />
+    <!-- The .ico files are what gets written to the registry, so they must exist as real files next to the exe. -->
+    <Content Include="Assets\Icons\*.ico" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <PropertyGroup>

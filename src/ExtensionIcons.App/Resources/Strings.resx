@@ -31,4 +31,25 @@
   <data name="StatusLoading" xml:space="preserve"><value>Reading the registry...</value></data>
   <data name="StatusShowing" xml:space="preserve"><value>Showing {0} of {1} extensions</value></data>
   <data name="StatusLoadFailed" xml:space="preserve"><value>Could not read the registry: {0}</value></data>
+  <data name="SourceOverridden" xml:space="preserve"><value>Extension Icons override</value></data>
+  <data name="ButtonUseCatalogIcon" xml:space="preserve"><value>Use catalog icon</value></data>
+  <data name="ButtonChooseIcon" xml:space="preserve"><value>Choose icon file...</value></data>
+  <data name="ButtonRestoreSelected" xml:space="preserve"><value>Restore selected</value></data>
+  <data name="ButtonRestoreAll" xml:space="preserve"><value>Restore all (fix mode)</value></data>
+  <data name="DialogTitle" xml:space="preserve"><value>Extension Icons</value></data>
+  <data name="PickIconTitle" xml:space="preserve"><value>Choose an icon for {0}</value></data>
+  <data name="PickIconFilter" xml:space="preserve"><value>Icon files (*.ico)|*.ico</value></data>
+  <data name="ConfirmSharedMessage" xml:space="preserve"><value>{0} uses the program entry "{1}", which other file types share. Changing its icon also changes it for: {2}.
+
+Continue?</value></data>
+  <data name="ConfirmRestoreAllMessage" xml:space="preserve"><value>Put every icon that Extension Icons changed back to how it was before?</value></data>
+  <data name="StatusIconChanged" xml:space="preserve"><value>Icon changed for {0}. Explorer may take a moment to show it.</value></data>
+  <data name="StatusRestored" xml:space="preserve"><value>Restored: {0}. Explorer may take a moment to show it.</value></data>
+  <data name="StatusNothingToRestore" xml:space="preserve"><value>Nothing to restore.</value></data>
+  <data name="ErrorNotRegistered" xml:space="preserve"><value>{0} is not a registered file type, so its icon cannot be changed.</value></data>
+  <data name="ErrorInvalidIcon" xml:space="preserve"><value>That is not a usable icon file.</value></data>
+  <data name="ErrorNotIco" xml:space="preserve"><value>Choose an icon file (.ico).</value></data>
+  <data name="ErrorFileMissing" xml:space="preserve"><value>The icon file could not be found.</value></data>
+  <data name="ErrorNoProgId" xml:space="preserve"><value>{0} has no program entry (ProgID) registered, so there is no icon to change.</value></data>
+  <data name="ErrorGeneric" xml:space="preserve"><value>The change could not be completed: {0}</value></data>
 </root>

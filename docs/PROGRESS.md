@@ -6,7 +6,7 @@ completed — don't let it drift from reality.
 
 ## MVP (v0.1)
 
-`[████░░]` 4/6 — 67%
+`[█████░]` 5/6 — 83%
 
 - [x] 1. Spike: validate icon-only override mechanism (§3). — see
       [`spikes/001-icon-override-mechanism.md`](spikes/001-icon-override-mechanism.md)
@@ -37,12 +37,29 @@ completed — don't let it drift from reality.
       (AppX) ProgIDs, e.g. Notepad's `.txt`, show no icon or friendly type
       name and the raw ProgID as the program; resolving those needs the
       package manifest.
-- [ ] 5. Core + App: icon override (user scope) + snapshot/restore
-      ("fix mode"). — Pre-work done: [spike 002](spikes/002-icon-resolution.md)
-      settled the two open questions. Scope: dedicated per-extension ProgID for
-      extensions without a `UserChoice`; for those with one, override the
-      `UserChoice` ProgID's `DefaultIcon` after a confirmation listing every
-      extension sharing it. Refresh via `SHChangeNotify` is asynchronous.
+- [x] 5. Core + App: icon override (user scope) + snapshot/restore
+      ("fix mode"). — Built on [spike 002](spikes/002-icon-resolution.md).
+      Every registry write goes through `SnapshotManager`, which saves a
+      snapshot to `%LOCALAPPDATA%\ExtensionIcons\snapshots` *before* the first
+      write, rolls back on failure, and can restore one snapshot, one
+      extension, or everything ("Restore selected" / "Restore all"). Overrides
+      (`IconOverrideService`, plan then apply): an extension without a
+      `UserChoice` whose ProgID is simple enough to copy exactly gets its own
+      ProgID (affects only that extension); anything else (a `UserChoice`, or
+      a ProgID with DDE, `DelegateExecute`, shell extensions or non-text
+      values) changes only the existing ProgID's `DefaultIcon`, which never
+      affects opening, and asks for confirmation listing every extension that
+      shares it. Chosen icons are copied to `%LOCALAPPDATA%\ExtensionIcons\icons`
+      so they outlive the original file. UI: "Use catalog icon", "Choose icon
+      file...", "Restore selected", "Restore all (fix mode)". 116 unit tests
+      (fake registry); also run against the real registry on throwaway
+      extensions (override, DDE fallback, revert byte-for-byte, restore from a
+      fresh process) and through the real window with UI Automation. Not
+      exercised live: changing a ProgID that is defined machine-wide (HKLM),
+      which relies on the documented HKCU-over-HKLM merge, and the shared-icon
+      confirmation dialog (covered by unit tests only). Try it first on an
+      unimportant extension; "Restore all" undoes it. Refresh in Explorer is
+      asynchronous (`SHChangeNotify`).
 - [ ] 6. Ship MVP.
 
 ## v1.0

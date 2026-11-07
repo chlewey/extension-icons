@@ -33,7 +33,15 @@
             </StackPanel>
         </Grid>
 
-        <DataGrid ItemsSource="{Binding RowsView}" AutoGenerateColumns="False" IsReadOnly="True"
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="12,0,12,8">
+            <Button Content="{x:Static res:Strings.ButtonUseCatalogIcon}" Command="{Binding UseCatalogIconCommand}" Padding="12,4" Margin="0,0,8,0"/>
+            <Button Content="{x:Static res:Strings.ButtonChooseIcon}" Command="{Binding ChooseIconFileCommand}" Padding="12,4" Margin="0,0,24,0"/>
+            <Button Content="{x:Static res:Strings.ButtonRestoreSelected}" Command="{Binding RestoreSelectedCommand}" Padding="12,4" Margin="0,0,8,0"/>
+            <Button Content="{x:Static res:Strings.ButtonRestoreAll}" Command="{Binding RestoreAllCommand}" Padding="12,4"/>
+        </StackPanel>
+
+        <DataGrid ItemsSource="{Binding RowsView}" SelectedItem="{Binding SelectedRow, Mode=TwoWay}"
+                  AutoGenerateColumns="False" IsReadOnly="True"
                   HeadersVisibility="Column" GridLinesVisibility="Horizontal" SelectionMode="Single"
                   CanUserAddRows="False" CanUserDeleteRows="False" RowHeight="32"
                   HorizontalGridLinesBrush="#E6E6E6" BorderBrush="#C8C8C8"
@@ -59,7 +67,7 @@
                 <DataGridTextColumn Header="{x:Static res:Strings.ColumnDescription}" Binding="{Binding Description}" Width="*"/>
                 <DataGridTextColumn Header="{x:Static res:Strings.ColumnOwner}" Binding="{Binding Owner}" Width="170"/>
                 <DataGridTextColumn Header="{x:Static res:Strings.ColumnProgId}" Binding="{Binding ProgId}" Width="190"/>
-                <DataGridTextColumn Header="{x:Static res:Strings.ColumnSource}" Binding="{Binding Source}" Width="110"/>
+                <DataGridTextColumn Header="{x:Static res:Strings.ColumnSource}" Binding="{Binding Source}" Width="170"/>
                 <DataGridTemplateColumn Header="{x:Static res:Strings.ColumnCatalogIcon}" Width="100" SortMemberPath="CatalogFormat">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

@@ -30,6 +30,19 @@ public sealed class Win32RegistryProvider : IRegistryProvider
         key.SetValue(valueName, value, RegistryValueKind.String);
     }
 
+    public void DeleteValue(RegistryHive hive, string keyPath, string valueName)
+    {
+        EnsureWritable(hive);
+        using var key = Root(hive).OpenSubKey(keyPath, writable: true);
+        key?.DeleteValue(valueName, throwOnMissingValue: false);
+    }
+
+    public IReadOnlyList<string> GetValueNames(RegistryHive hive, string keyPath)
+    {
+        using var key = Root(hive).OpenSubKey(keyPath);
+        return key?.GetValueNames() ?? [];
+    }
+
     public void DeleteKey(RegistryHive hive, string keyPath, bool recursive = true)
     {
         EnsureWritable(hive);

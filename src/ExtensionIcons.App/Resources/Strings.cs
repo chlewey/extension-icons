@@ -31,4 +31,23 @@ public static class Strings
     public static string StatusLoading => Get(nameof(StatusLoading));
     public static string StatusShowing => Get(nameof(StatusShowing));
     public static string StatusLoadFailed => Get(nameof(StatusLoadFailed));
+    public static string SourceOverridden => Get(nameof(SourceOverridden));
+    public static string ButtonUseCatalogIcon => Get(nameof(ButtonUseCatalogIcon));
+    public static string ButtonChooseIcon => Get(nameof(ButtonChooseIcon));
+    public static string ButtonRestoreSelected => Get(nameof(ButtonRestoreSelected));
+    public static string ButtonRestoreAll => Get(nameof(ButtonRestoreAll));
+    public static string DialogTitle => Get(nameof(DialogTitle));
+    public static string PickIconTitle => Get(nameof(PickIconTitle));
+    public static string PickIconFilter => Get(nameof(PickIconFilter));
+    public static string ConfirmSharedMessage => Get(nameof(ConfirmSharedMessage));
+    public static string ConfirmRestoreAllMessage => Get(nameof(ConfirmRestoreAllMessage));
+    public static string StatusIconChanged => Get(nameof(StatusIconChanged));
+    public static string StatusRestored => Get(nameof(StatusRestored));
+    public static string StatusNothingToRestore => Get(nameof(StatusNothingToRestore));
+    public static string ErrorNotRegistered => Get(nameof(ErrorNotRegistered));
+    public static string ErrorInvalidIcon => Get(nameof(ErrorInvalidIcon));
+    public static string ErrorNotIco => Get(nameof(ErrorNotIco));
+    public static string ErrorFileMissing => Get(nameof(ErrorFileMissing));
+    public static string ErrorNoProgId => Get(nameof(ErrorNoProgId));
+    public static string ErrorGeneric => Get(nameof(ErrorGeneric));
 }

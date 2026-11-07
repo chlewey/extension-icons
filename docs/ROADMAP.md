@@ -78,10 +78,12 @@ COM shell extension) — more work, flagged here so it doesn't block planning.
 **Spike results.** [Spike 001](spikes/001-icon-override-mechanism.md) and
 [spike 002](spikes/002-icon-resolution.md) found that `UserChoice` governs the icon
 as well as the open action, and that a per-extension dedicated ProgID only works
-for extensions with no `UserChoice`. For extensions that have one (most of the
-contested formats), step 5 overrides the `UserChoice` ProgID's own `DefaultIcon`
-with a confirmation listing every extension that shares it; the per-extension
-`IconHandler` stays the proper fix and needs its own spike before v1.0.
+for extensions with no `UserChoice`. Step 5 therefore gives an extension its own
+ProgID only when it has no `UserChoice` and the old ProgID can be copied exactly;
+otherwise (a `UserChoice`, or DDE, `DelegateExecute`, shell extensions) it changes
+only the existing ProgID's `DefaultIcon`, with a confirmation listing every
+extension that shares it. The per-extension `IconHandler` stays the proper fix and
+needs its own spike before v1.0.
 
 ## 4. MVP (v0.1) — prove the core value, read-mostly, user-scope only
 
