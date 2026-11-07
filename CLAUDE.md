@@ -3,7 +3,7 @@
 Windows 11 app that decouples a file extension's icon from whichever app currently owns the association. Full plan: [docs/ROADMAP.md](docs/ROADMAP.md). User-facing docs: [README.md](README.md) (English) and [LEEME.md](LEEME.md) (Spanish).
 
 ## Stack
-- C# / .NET 8 (`net8.0-windows`), WPF with MVVM (CommunityToolkit.Mvvm planned, not yet referenced)
+- C# / .NET 8 (`net8.0-windows`), WPF with MVVM (CommunityToolkit.Mvvm, referenced on `develop/mvp`; not yet on `master`)
 - xUnit tests, coverlet for coverage
 - Windows Registry + Shell APIs (`HKCU\Software\Classes`, per-user `UserChoice`)
 
@@ -46,7 +46,13 @@ Open `ExtensionIcons.sln` in Visual Studio 2022 to run/debug the app.
 - `develop/*` and `feature/*` merge to `master` by pull request when shippable.
 
 ## Current status
-Roadmap work happens on `develop/mvp`; `master` lags it until the MVP is shippable. As of 2026-11-05, MVP steps 1-2 of 6 are done there: the icon-override spike (`docs/spikes/`) and the Core registry/shell abstraction layer (`IRegistryProvider`, `IShellNotifier`, Win32 and Fake implementations, 12 tests). Next: extension inventory + built-in catalog, then the read-only inventory UI.
+Roadmap work happens on `develop/mvp`; `master` lags it until the MVP is shippable. As of 2026-11-06, MVP steps 1-4 of 6 are done there (56 tests):
+- Spike: icon-only override validated for an extension with no `UserChoice` (`docs/spikes/`). Open: whether `UserChoice` governs icons, and shared ProgIDs (`.htm`/`.html`).
+- Core: registry/shell abstraction (`IRegistryProvider`, `IShellNotifier`, Win32 and Fake implementations), `ExtensionInventory`, `BuiltInCatalog` (11 formats), `IconLocation`/`OpenCommand` parsers, `InventoryFilter`.
+- App: read-only inventory grid with search and two filters, UI strings in `Resources/Strings.resx`. Catalog icons are generated placeholders (`tools/generate-placeholder-icons.ps1`, PNGs in `src/ExtensionIcons.App/Assets/Icons/`).
+- Known gap: packaged (AppX) ProgIDs show no icon or friendly name.
+
+Next: step 5, icon override (user scope) plus snapshot/restore, the first step that writes to the registry. Plan a short spike on the two open questions first.
 Live progress is tracked in `docs/PROGRESS.md` (on `develop/mvp`); check it rather than trusting this snapshot.
 
 ## Conventions
@@ -54,3 +60,4 @@ Live progress is tracked in `docs/PROGRESS.md` (on `develop/mvp`); check it rath
 - Keep README.md and LEEME.md in sync when either changes.
 - Git: default branch is `master` (there is no `main`). Commit/push only when asked.
 - Roadmap work goes on a `develop/*` branch, not directly on `master`.
+- **Keep this file current on `master` at all times.** Whenever a milestone step lands, the stack, layout, environment or rules change, or the branch layout changes, update CLAUDE.md on `master` in the same working session, then commit and push it to `origin/master` (standing instruction from the owner, 2026-11-06). Update the "Current status" date too.
