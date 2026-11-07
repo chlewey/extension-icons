@@ -31,7 +31,8 @@ Open `ExtensionIcons.sln` in Visual Studio 2022 to run/debug the app.
 ## Rules (from the roadmap)
 - `ExtensionIcons.Core` must not touch `Microsoft.Win32.Registry` or shell32 P/Invoke directly in testable logic. Go through `IRegistryProvider` / `IShellNotifier`, with a real implementation and an in-memory fake.
 - No test may touch the real registry.
-- Every operation that writes the registry must snapshot first, with no exceptions, so "fix mode" stays trustworthy.
+- Every operation that writes the registry must snapshot first, with no exceptions, so "fix mode" stays trustworthy. In code that means: write only through `SnapshotManager.ApplyWithSnapshot`, never call `IRegistryProvider.SetValue` directly from feature code.
+- An override must never change how a file opens. If a ProgID cannot be copied exactly (DDE, `DelegateExecute`, shell extensions, non-text values), change only the existing ProgID's `DefaultIcon`.
 - Do not write `UserChoice` directly (hash-protected since Windows 10 1703). Changing a default app goes through the OS-sanctioned flow (`ms-settings:defaultapps` or `IApplicationAssociationRegistrationUI`).
 - MVP is per-user only (`HKCU`). Machine-wide changes (v1.0) use an elevated helper launched on demand; the main app stays unprivileged.
 - UI strings live in `.resx` resources from day one. v1.0 must ship English and Spanish, selectable in-app and defaulting to the OS language; Spanish is reviewed by a native speaker.
@@ -46,13 +47,16 @@ Open `ExtensionIcons.sln` in Visual Studio 2022 to run/debug the app.
 - `develop/*` and `feature/*` merge to `master` by pull request when shippable.
 
 ## Current status
-Roadmap work happens on `develop/mvp`; `master` lags it until the MVP is shippable. As of 2026-11-06, MVP steps 1-4 of 6 are done there (56 tests):
+Roadmap work happens on `develop/mvp`; `master` lags it until the MVP is shippable. As of 2026-11-06, MVP steps 1-5 of 6 are done there (116 tests):
 - Spikes 001 and 002 (`docs/spikes/`): `UserChoice` governs the icon as well as the open action. A per-extension dedicated ProgID (as the extension's class default) changes only that extension's icon, but only when it has no `UserChoice`. `.ext\DefaultIcon` and `SystemFileAssociations\.ext\DefaultIcon` are ignored. `SHChangeNotify` refresh is asynchronous. A shared ProgID such as `MSEdgeHTM` (`.htm`/`.html`/`.xml`) can only be overridden for all its extensions at once, short of an `IconHandler` COM shell extension (untested).
-- Core: registry/shell abstraction (`IRegistryProvider`, `IShellNotifier`, Win32 and Fake implementations), `ExtensionInventory`, `BuiltInCatalog` (11 formats), `IconLocation`/`OpenCommand` parsers, `InventoryFilter`.
-- App: read-only inventory grid with search and two filters, UI strings in `Resources/Strings.resx`. Catalog icons are generated placeholders (`tools/generate-placeholder-icons.ps1`, PNGs in `src/ExtensionIcons.App/Assets/Icons/`).
-- Known gap: packaged (AppX) ProgIDs show no icon or friendly name.
+- Core: registry/shell abstraction (`IRegistryProvider` incl. `DeleteValue`/`GetValueNames`, `IShellNotifier`, Win32 and Fake implementations; the fake merges HKCU over its seeded `ClassesRoot` like the real view), `ExtensionInventory`, `BuiltInCatalog` (11 formats), `IconLocation`/`OpenCommand` parsers, `InventoryFilter`.
+- Core, step 5: `SnapshotManager` is the only way to write the registry (snapshot saved to disk before the first write, rollback on failure, restore per snapshot/extension/all). `IconOverrideService` plans then applies an override: own ProgID `ExtensionIcons.<ext>` only for an extension with no `UserChoice` whose ProgID can be copied exactly; otherwise it changes the existing ProgID's `DefaultIcon` and requires acknowledgment when other extensions share it. `FileIconStore` keeps copies of chosen `.ico` files.
+- App: inventory grid with search and two filters; buttons "Use catalog icon", "Choose icon file...", "Restore selected", "Restore all (fix mode)". UI strings in `Resources/Strings.resx`. Catalog icons are generated placeholders (`tools/generate-placeholder-icons.ps1` makes a PNG for the grid and a multi-size `.ico` for the registry per key, in `src/ExtensionIcons.App/Assets/Icons/`).
+- Runtime data: `%LOCALAPPDATA%\ExtensionIcons\snapshots` and `\icons`. Never delete the snapshots folder casually; it is the way back.
+- Testing tip: never test against real extensions. Use throwaway ones (e.g. `.exticon...`) under `HKCU\Software\Classes` and clean up in a `finally` (see `docs/spikes/002-icon-resolution/`).
+- Known gaps: packaged (AppX) ProgIDs show no icon or friendly name; changing a machine-wide (HKLM) ProgID and the shared-icon confirmation dialog were only covered by unit tests, not exercised live.
 
-Next: step 5, icon override (user scope) plus snapshot/restore, the first step that writes to the registry. Agreed scope from the spikes: dedicated ProgID for extensions without a `UserChoice`; for those with one, override the `UserChoice` ProgID's `DefaultIcon` after a confirmation listing every extension that shares it. An `IconHandler` spike is needed before v1.0.
+Next: step 6, ship the MVP: merge `develop/mvp` to `master` by pull request, plus a self-contained `dotnet publish`, a manual smoke-test checklist (ROADMAP §7), real artwork for the catalog icons, and a live check of a shared machine-wide ProgID. An `IconHandler` spike is needed before v1.0.
 Live progress is tracked in `docs/PROGRESS.md` (on `develop/mvp`); check it rather than trusting this snapshot.
 
 ## Conventions
