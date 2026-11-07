@@ -47,12 +47,12 @@ Open `ExtensionIcons.sln` in Visual Studio 2022 to run/debug the app.
 
 ## Current status
 Roadmap work happens on `develop/mvp`; `master` lags it until the MVP is shippable. As of 2026-11-06, MVP steps 1-4 of 6 are done there (56 tests):
-- Spike: icon-only override validated for an extension with no `UserChoice` (`docs/spikes/`). Open: whether `UserChoice` governs icons, and shared ProgIDs (`.htm`/`.html`).
+- Spikes 001 and 002 (`docs/spikes/`): `UserChoice` governs the icon as well as the open action. A per-extension dedicated ProgID (as the extension's class default) changes only that extension's icon, but only when it has no `UserChoice`. `.ext\DefaultIcon` and `SystemFileAssociations\.ext\DefaultIcon` are ignored. `SHChangeNotify` refresh is asynchronous. A shared ProgID such as `MSEdgeHTM` (`.htm`/`.html`/`.xml`) can only be overridden for all its extensions at once, short of an `IconHandler` COM shell extension (untested).
 - Core: registry/shell abstraction (`IRegistryProvider`, `IShellNotifier`, Win32 and Fake implementations), `ExtensionInventory`, `BuiltInCatalog` (11 formats), `IconLocation`/`OpenCommand` parsers, `InventoryFilter`.
 - App: read-only inventory grid with search and two filters, UI strings in `Resources/Strings.resx`. Catalog icons are generated placeholders (`tools/generate-placeholder-icons.ps1`, PNGs in `src/ExtensionIcons.App/Assets/Icons/`).
 - Known gap: packaged (AppX) ProgIDs show no icon or friendly name.
 
-Next: step 5, icon override (user scope) plus snapshot/restore, the first step that writes to the registry. Plan a short spike on the two open questions first.
+Next: step 5, icon override (user scope) plus snapshot/restore, the first step that writes to the registry. Agreed scope from the spikes: dedicated ProgID for extensions without a `UserChoice`; for those with one, override the `UserChoice` ProgID's `DefaultIcon` after a confirmation listing every extension that shares it. An `IconHandler` spike is needed before v1.0.
 Live progress is tracked in `docs/PROGRESS.md` (on `develop/mvp`); check it rather than trusting this snapshot.
 
 ## Conventions
