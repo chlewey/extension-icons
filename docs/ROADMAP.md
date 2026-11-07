@@ -75,6 +75,14 @@ top of it. If direct `DefaultIcon` override turns out to be blocked the same
 way `UserChoice` is, the fallback is a user-mode icon handler (`IconHandler`
 COM shell extension) — more work, flagged here so it doesn't block planning.
 
+**Spike results.** [Spike 001](spikes/001-icon-override-mechanism.md) and
+[spike 002](spikes/002-icon-resolution.md) found that `UserChoice` governs the icon
+as well as the open action, and that a per-extension dedicated ProgID only works
+for extensions with no `UserChoice`. For extensions that have one (most of the
+contested formats), step 5 overrides the `UserChoice` ProgID's own `DefaultIcon`
+with a confirmation listing every extension that shares it; the per-extension
+`IconHandler` stays the proper fix and needs its own spike before v1.0.
+
 ## 4. MVP (v0.1) — prove the core value, read-mostly, user-scope only
 
 Goal: a user can see *why* an extension has the icon it has, and override the

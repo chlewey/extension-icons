@@ -38,7 +38,11 @@ completed — don't let it drift from reality.
       name and the raw ProgID as the program; resolving those needs the
       package manifest.
 - [ ] 5. Core + App: icon override (user scope) + snapshot/restore
-      ("fix mode").
+      ("fix mode"). — Pre-work done: [spike 002](spikes/002-icon-resolution.md)
+      settled the two open questions. Scope: dedicated per-extension ProgID for
+      extensions without a `UserChoice`; for those with one, override the
+      `UserChoice` ProgID's `DefaultIcon` after a confirmation listing every
+      extension sharing it. Refresh via `SHChangeNotify` is asynchronous.
 - [ ] 6. Ship MVP.
 
 ## v1.0
